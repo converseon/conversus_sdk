@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='conversus-api',
-    version='0.1',
+    version='0.0.1',
     author="Anthony Bu",
     author_email="abu@converseon.com",
     description="Python SDK for Conversus API",
