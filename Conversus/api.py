@@ -5,8 +5,6 @@
 import requests
 import json
 
-import random
-
 __author__ = "Anthony Bu"
 __copyright__ = "Copyright 2019, Converseon"
 
@@ -24,19 +22,30 @@ class ConversusConnection(object):
     def __str__(self):
         return 'ConversusAPI({})'.format(self.api_key)
 
-    def validate_api_key(self, api_key: str) -> bool:
-        response = requests.get(self.base_url + 'auth/verify_api_key?api_key={}'.format(api_key))
+    def _call_api(self, method: str, endpoint: str, return_json: bool=True):
+        try:
+            req = getattr(requests, method)
+        except AttributeError:
+            raise ValueError('Method {} not found.'.format(method))
+        response = req(self.base_url + endpoint)
+
         if response.status_code == 200:
-            json_data = json.loads(response.text)
-            if json_data['validation']:
-                return True
+            if return_json:
+                return json.loads(response.text)
             else:
-                raise ValueError('Invalid API Key')
+                return response.text
         else:
             raise RuntimeError('Conversus API Error')
 
+    def validate_api_key(self, api_key: str) -> bool:
+        response = self._call_api('get', 'auth/verify_api_key?api_key={}'.format(api_key))
+        if response['validation']:
+            return True
+        else:
+            raise ValueError('Invalid API Key')
+
     def refresh_core_model_list(self, api_key: str) -> None:
-        self.core_models = requests.get(self.base_url + 'auth/list_core_classifiers?api_key={}'.format(api_key))
+        self.core_models = self._call_api('get', 'auth/list_core_classifiers?api_key={}'.format(api_key))
 
     def refresh_custom_model_list(self, api_key: str) -> None:
-        self.custom_models = requests.get(self.base_url + 'auth/list_custom_classifiers?api_key={}'.format(api_key))
+        self.custom_models = self._call_api('get', 'auth/list_custom_classifiers?api_key={}'.format(api_key))
