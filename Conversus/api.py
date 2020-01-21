@@ -31,7 +31,7 @@ class ConversusConnection(object):
             raise ValueError('Method {} not found.'.format(method))
         self.logger.debug('Calling API: [{}], {}'.format(method, endpoint))
         response = req(self.config.base_url + endpoint)
-        self.logger.debug('API response: status_code {}, size {}'.format(response.status_code, response.size))
+        self.logger.debug('API response: status_code {}, size {}'.format(response.status_code, len(response.content)))
 
         if response.status_code == 200:
             if return_json:
