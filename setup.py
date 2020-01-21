@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='conversus-api',
-    version='0.0.4',
+    version='0.0.5',
     author="Anthony Bu",
     author_email="abu@converseon.com",
     description="Python SDK for Conversus API",
@@ -16,7 +16,7 @@ setuptools.setup(
     url="https://github.com/converseon/conversus_sdk",
     packages=setuptools.find_packages(exclude="tests"),
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
